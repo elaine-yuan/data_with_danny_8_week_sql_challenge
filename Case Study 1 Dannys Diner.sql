@@ -12,11 +12,6 @@ GROUP BY 1
 ORDER BY 2 DESC
 ;
 
--- ANSWERS
--- A spent $76
--- B spent $74
--- C spent $36
-
 -- 2. How many days has each customer visited the restaurant?
 
 SELECT customer_id, COUNT(DISTINCT order_date) as days_visited
@@ -24,11 +19,6 @@ FROM sales
 GROUP BY 1
 ORDER BY 2 DESC
 ;
-
--- ANSWERS
--- B visited 6 times
--- A visited 4 times
--- C visited 2 times
 
 -- 3. What was the first item from the menu purchased by each customer?
 -- ASSUMPTION: if the first order includes multiple items, the first item purchased is based on product_id
@@ -47,11 +37,6 @@ FROM items_purchased
 WHERE rank=1
 ;
 
--- ANSWERS
--- A first purchased sushi
--- B first purchased curry
--- C first purchased ramen
-
 -- 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
 
 SELECT m.product_name, COUNT(s.product_id)
@@ -62,10 +47,6 @@ GROUP BY 1
 ORDER BY 2 DESC
 LIMIT 1
 ;
-
--- ANSWERS
--- ramen is the most purchased items
--- it was purchased 8 times
 
 -- 5. Which item was the most popular for each customer?
 -- ASSUMPTION: most popular = most often purchased 
@@ -87,11 +68,6 @@ FROM ranked_products_purchased
 WHERE rank=1
 ;
 
--- ANSWERS
--- ramen was the most popular for A
--- all 3 items (ramen, sushi, curry) are equally popular for B
--- ramen is the most popular for C
-
 -- 6. Which item was purchased first by the customer after they became a member?
 
 WITH items_as_member AS (
@@ -108,10 +84,6 @@ SELECT customer_id, product_name
 FROM items_as_member
 WHERE rank=1
 ;
-
--- ANSWERS
--- A bought curry after becoming a member
--- B bought sushi after becoming a member
 
 --data validate
 --SELECT s.customer_id, mm.join_date,  ----s.order_date, m.product_name
@@ -142,9 +114,6 @@ FROM items_before_member
 WHERE rank=1
 ;
 
--- ANSWERS
--- customers A and B last purchased curry before becoming members
-
 --data validate
 --SELECT s.customer_id, mm.join_date, s.order_date, m.product_name
 --FROM sales s
@@ -167,10 +136,6 @@ ON s.customer_id=mm.customer_id
 WHERE mm.join_date>s.order_date
 GROUP BY 1
 ;
-
--- ANSWERS
--- B bought 3 items and spent $40 before becoming a member
--- A bought 2 items and spent $25 before becoming a member
 
 -- 9.  If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 -- ASSUMPTION: only members can earn points
@@ -202,10 +167,6 @@ SELECT customer_id, SUM(points) as total_points
 FROM unioned_tables
 GROUP BY 1
 ;
-
--- ANSWERS
--- A has 510 points
--- B has 440 points
 
 -- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
 
@@ -251,10 +212,6 @@ SELECT customer_id, SUM(points) as total_points
 FROM unioned_cte
 GROUP BY 1
 ;
-
--- ANSWERS
--- A has 1020 points
--- B has 440 points
 
 /* --------------------
   Bonus Questions
